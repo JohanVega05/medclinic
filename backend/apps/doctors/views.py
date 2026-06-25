@@ -8,13 +8,14 @@ from apps.users.models import User
 
 
 class SpecialtyListCreateView(generics.ListCreateAPIView):
-    queryset = Specialty.objects.all()
+    queryset = Specialty.objects.all().order_by('id')
     serializer_class = SpecialtySerializer
 
     def get_permissions(self):
         if self.request.method == 'GET':
             return [AllowAny()]
         return [IsAuthenticated()]
+
 
 
 class SpecialtyDetailView(generics.RetrieveUpdateDestroyAPIView):
@@ -39,7 +40,7 @@ class DoctorListView(generics.ListAPIView):
 
 
 class DoctorAdminListView(generics.ListAPIView):
-    queryset = Doctor.objects.all().select_related('user', 'specialty')
+    queryset = Doctor.objects.all().select_related('user', 'specialty').order_by('created_at')
     serializer_class = DoctorSerializer
     permission_classes = [IsAuthenticated]
 
